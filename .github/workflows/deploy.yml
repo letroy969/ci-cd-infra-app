@@ -58,19 +58,13 @@ jobs:
 
       - name: Terraform Plan
         working-directory: terraform
-        run: terraform plan -no-color \
-          -var="app_name=${{ env.APP_NAME }}" \
-          -var="aws_region=${{ env.AWS_REGION }}" \
-          -var="desired_count=0"
+        run: terraform plan -no-color -var="app_name=${{ env.APP_NAME }}" -var="aws_region=${{ env.AWS_REGION }}" -var="desired_count=0"
         env:
           TF_LOG: DEBUG
 
       - name: Terraform Apply (infra, desired_count=0)
         working-directory: terraform
-        run: terraform apply -auto-approve -input=false -no-color \
-          -var="app_name=${{ env.APP_NAME }}" \
-          -var="aws_region=${{ env.AWS_REGION }}" \
-          -var="desired_count=0"
+        run: terraform apply -auto-approve -input=false -no-color -var="app_name=${{ env.APP_NAME }}" -var="aws_region=${{ env.AWS_REGION }}" -var="desired_count=0"
         env:
           TF_LOG: DEBUG
 
