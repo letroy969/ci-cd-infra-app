@@ -1,0 +1,117 @@
+name: Enhanced Debug - Step by Step
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+env:
+  APP_NAME: ci-cd-app
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  enhanced-debug:
+    name: Enhanced Debug Step by Step
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Debug Environment
+        run: |
+          echo "=== ENVIRONMENT DEBUG ==="
+          echo "APP_NAME: ${{ env.APP_NAME }}"
+          echo "AWS_REGION: ${{ env.AWS_REGION }}"
+          echo "AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}"
+          echo ""
+          echo "=== SECRETS CHECK ==="
+          if [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "✅ AWS_ACCESS_KEY_ID: SET (length: ${#AWS_ACCESS_KEY_ID})"
+          else
+            echo "❌ AWS_ACCESS_KEY_ID: NOT SET"
+          fi
+          
+          if [ -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "✅ AWS_SECRET_ACCESS_KEY: SET (length: ${#AWS_SECRET_ACCESS_KEY})"
+          else
+            echo "❌ AWS_SECRET_ACCESS_KEY: NOT SET"
+          fi
+          
+          if [ -n "${{ secrets.AWS_REGION }}" ]; then
+            echo "✅ AWS_REGION: ${{ secrets.AWS_REGION }}"
+          else
+            echo "❌ AWS_REGION: NOT SET"
+          fi
+          
+          if [ -n "${{ secrets.AWS_ACCOUNT_ID }}" ]; then
+            echo "✅ AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
+          else
+            echo "❌ AWS_ACCOUNT_ID: NOT SET"
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Test AWS Connection Step by Step
+        run: |
+          echo "=== AWS CONNECTION TEST ==="
+          echo "Step 1: Testing basic AWS CLI..."
+          aws --version
+          
+          echo "Step 2: Testing AWS credentials..."
+          aws sts get-caller-identity
+          
+          echo "Step 3: Testing region access..."
+          aws configure get region
+          
+          echo "Step 4: Testing VPC permissions..."
+          aws ec2 describe-vpcs --max-items 1 --region ${{ secrets.AWS_REGION }}
+          
+          echo "Step 5: Testing ECS permissions..."
+          aws ecs list-clusters --region ${{ secrets.AWS_REGION }}
+          
+          echo "Step 6: Testing ECR permissions..."
+          aws ecr describe-repositories --region ${{ secrets.AWS_REGION }} || echo "No ECR repos yet (this is OK)"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.6"
+
+      - name: Terraform Init with Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM INIT DEBUG ==="
+          export TF_LOG=DEBUG
+          export TF_LOG_PATH=terraform_init.log
+          terraform init -input=false
+          echo "Terraform init completed"
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM VALIDATE ==="
+          terraform validate
+
+      - name: Terraform Plan with Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM PLAN DEBUG ==="
+          export TF_LOG=DEBUG
+          export TF_LOG_PATH=terraform_plan.log
+          terraform plan -input=false \
+            -var "app_name=${{ env.APP_NAME }}" \
+            -var "aws_region=${{ env.AWS_REGION }}" \
+            -var "desired_count=0"
+          echo "Terraform plan completed"
+
+      - name: Upload Debug Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: debug-logs
+          path: |
+            terraform/terraform_init.log
+            terraform/terraform_plan.log
