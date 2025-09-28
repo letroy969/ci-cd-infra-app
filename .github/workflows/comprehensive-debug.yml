@@ -1,0 +1,145 @@
+name: Comprehensive Debug - Capture All Errors
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  comprehensive-debug:
+    name: Comprehensive Debug - Step by Step
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: ci-cd-app
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Debug Environment Variables
+        run: |
+          echo "=== COMPREHENSIVE ENVIRONMENT DEBUG ==="
+          echo "APP_NAME: ${{ env.APP_NAME }}"
+          echo "AWS_REGION: ${{ env.AWS_REGION }}"
+          echo "AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}"
+          echo "AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID && 'SET' || 'NOT SET' }}"
+          echo "AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY && 'SET' || 'NOT SET' }}"
+          echo ""
+          echo "=== AWS CLI VERSION ==="
+          aws --version
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Test AWS Connection
+        run: |
+          echo "=== TESTING AWS CONNECTION ==="
+          aws sts get-caller-identity
+          echo ""
+          echo "=== TESTING AWS PERMISSIONS ==="
+          aws ec2 describe-regions --region-names ${{ secrets.AWS_REGION }}
+          aws ecs list-clusters --region ${{ secrets.AWS_REGION }} || echo "No ECS clusters yet"
+          aws ecr describe-repositories --region ${{ secrets.AWS_REGION }} || echo "No ECR repos yet"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.5"
+
+      - name: Debug Terraform Installation
+        run: |
+          echo "=== TERRAFORM DEBUG ==="
+          terraform version
+          echo ""
+          echo "=== TERRAFORM WORKING DIRECTORY ==="
+          pwd
+          ls -la
+          echo ""
+          echo "=== TERRAFORM DIRECTORY CONTENTS ==="
+          ls -la terraform/
+
+      - name: Terraform Format Check
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM FORMAT CHECK ==="
+          terraform fmt -check -diff
+        continue-on-error: true
+
+      - name: Terraform Init with Full Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM INIT (DEBUG) ==="
+          export TF_LOG=TRACE
+          export TF_LOG_PATH=terraform_init.log
+          terraform init -input=false -no-color -upgrade
+          echo "Terraform init completed successfully"
+        continue-on-error: true
+
+      - name: Terraform Validate with Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM VALIDATE (DEBUG) ==="
+          export TF_LOG=TRACE
+          export TF_LOG_PATH=terraform_validate.log
+          terraform validate -no-color
+          echo "Terraform validate completed successfully"
+        continue-on-error: true
+
+      - name: Terraform Plan with Full Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM PLAN (DEBUG) ==="
+          export TF_LOG=TRACE
+          export TF_LOG_PATH=terraform_plan.log
+          terraform plan -no-color -detailed-exitcode \
+            -var="app_name=${{ env.APP_NAME }}" \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="desired_count=0"
+          PLAN_EXIT_CODE=$?
+          echo "Terraform plan exit code: $PLAN_EXIT_CODE"
+          if [ $PLAN_EXIT_CODE -eq 1 ]; then
+            echo "❌ Terraform plan failed with error"
+            exit 1
+          elif [ $PLAN_EXIT_CODE -eq 2 ]; then
+            echo "✅ Terraform plan shows changes to apply"
+          else
+            echo "✅ Terraform plan shows no changes"
+          fi
+        continue-on-error: true
+
+      - name: Terraform Apply with Full Debug
+        working-directory: terraform
+        run: |
+          echo "=== TERRAFORM APPLY (DEBUG) ==="
+          export TF_LOG=TRACE
+          export TF_LOG_PATH=terraform_apply.log
+          terraform apply -auto-approve -input=false -no-color \
+            -var="app_name=${{ env.APP_NAME }}" \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="desired_count=0"
+          APPLY_EXIT_CODE=$?
+          echo "Terraform apply exit code: $APPLY_EXIT_CODE"
+          if [ $APPLY_EXIT_CODE -ne 0 ]; then
+            echo "❌ Terraform apply failed with exit code: $APPLY_EXIT_CODE"
+            exit $APPLY_EXIT_CODE
+          else
+            echo "✅ Terraform apply completed successfully"
+          fi
+        continue-on-error: true
+
+      - name: Upload All Debug Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: comprehensive-debug-logs
+          path: |
+            terraform/terraform_init.log
+            terraform/terraform_validate.log
+            terraform/terraform_plan.log
+            terraform/terraform_apply.log
