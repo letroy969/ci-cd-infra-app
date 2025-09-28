@@ -102,9 +102,9 @@ jobs:
           export TF_LOG=DEBUG
           export TF_LOG_PATH=terraform_plan.log
           terraform plan -input=false \
-            -var "app_name=${{ env.APP_NAME }}" \
-            -var "aws_region=${{ env.AWS_REGION }}" \
-            -var "desired_count=0"
+            -var="app_name=${{ env.APP_NAME }}" \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="desired_count=0"
           echo "Terraform plan completed"
 
       - name: Upload Debug Logs
