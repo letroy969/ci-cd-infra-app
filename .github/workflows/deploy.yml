@@ -34,10 +34,7 @@ jobs:
 
       - name: Terraform apply (infra, desired_count=0)
         working-directory: terraform
-        run: terraform apply -auto-approve -input=false \
-              -var="app_name=${{ env.APP_NAME }}" \
-              -var="aws_region=${{ env.AWS_REGION }}" \
-              -var="desired_count=0"
+        run: terraform apply -auto-approve -input=false -var="app_name=${{ env.APP_NAME }}" -var="aws_region=${{ env.AWS_REGION }}" -var="desired_count=0"
 
       - name: Save terraform outputs
         working-directory: terraform
