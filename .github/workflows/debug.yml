@@ -1,0 +1,75 @@
+name: Debug AWS and Terraform
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+env:
+  APP_NAME: ci-cd-app
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  debug:
+    name: Debug AWS and Terraform Setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Debug Environment Variables
+        run: |
+          echo "=== Environment Variables ==="
+          echo "APP_NAME: ${{ env.APP_NAME }}"
+          echo "AWS_REGION: ${{ env.AWS_REGION }}"
+          echo "AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}"
+          echo ""
+          echo "=== GitHub Secrets (masked) ==="
+          echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID && 'SET' || 'NOT SET' }}"
+          echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY && 'SET' || 'NOT SET' }}"
+          echo "AWS_REGION: ${{ secrets.AWS_REGION && secrets.AWS_REGION || 'NOT SET' }}"
+          echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID && secrets.AWS_ACCOUNT_ID || 'NOT SET' }}"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Test AWS Connection
+        run: |
+          echo "=== Testing AWS Connection ==="
+          aws sts get-caller-identity
+          echo ""
+          echo "=== Testing AWS Region ==="
+          aws configure get region
+          echo ""
+          echo "=== Testing AWS Permissions ==="
+          echo "VPC:"
+          aws ec2 describe-regions --region-names ${{ secrets.AWS_REGION }} || echo "VPC access failed"
+          echo "ECS:"
+          aws ecs list-clusters --max-items 1 || echo "ECS access failed"
+          echo "ECR:"
+          aws ecr describe-repositories --max-items 1 || echo "ECR access failed"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.6"
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          echo "=== Terraform Init ==="
+          terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: |
+          echo "=== Terraform Validate ==="
+          terraform validate
+
+      - name: Terraform Plan (Detailed)
+        working-directory: terraform
+        run: |
+          echo "=== Terraform Plan ==="
+          terraform plan -input=false -var "app_name=${{ env.APP_NAME }}" -var "aws_region=${{ env.AWS_REGION }}" -var "desired_count=0"
