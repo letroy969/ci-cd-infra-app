@@ -4,17 +4,20 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  APP_NAME: ci-cd-app
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-
 jobs:
   infrastructure:
     name: Terraform apply (infra-only)
     runs-on: ubuntu-latest
+    env:
+      APP_NAME: ci-cd-app
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -23,25 +26,32 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.4.6"
+          terraform_version: "1.9.5"
 
-      - name: Terraform init
+      - name: Terraform Init
         working-directory: terraform
-        run: terraform init -input=false
+        run: terraform init
 
-      - name: Debug Terraform Command
+      - name: Terraform Validate
         working-directory: terraform
-        run: |
-          echo "About to run: terraform apply -auto-approve -input=false -var=\"app_name=${{ env.APP_NAME }}\" -var=\"aws_region=${{ env.AWS_REGION }}\" -var=\"desired_count=0\""
-          echo "APP_NAME=${{ env.APP_NAME }}"
-          echo "AWS_REGION=${{ env.AWS_REGION }}"
+        run: terraform validate
 
-      - name: Terraform apply (infra, desired_count=0)
+      - name: Terraform Plan
         working-directory: terraform
-        run: terraform apply -auto-approve -input=false -var="app_name=${{ env.APP_NAME }}" -var="aws_region=${{ env.AWS_REGION }}" -var="desired_count=0"
+        run: terraform plan \
+          -var="app_name=${{ env.APP_NAME }}" \
+          -var="aws_region=${{ env.AWS_REGION }}" \
+          -var="desired_count=0"
+
+      - name: Terraform Apply (infra, desired_count=0)
+        working-directory: terraform
+        run: terraform apply -auto-approve -input=false \
+          -var="app_name=${{ env.APP_NAME }}" \
+          -var="aws_region=${{ env.AWS_REGION }}" \
+          -var="desired_count=0"
 
       - name: Save terraform outputs
         working-directory: terraform
@@ -57,6 +67,13 @@ jobs:
     name: Build image, push to ECR, update ECS
     runs-on: ubuntu-latest
     needs: infrastructure
+    env:
+      APP_NAME: ci-cd-app
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
     steps:
       - uses: actions/checkout@v3
 
