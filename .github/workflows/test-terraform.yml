@@ -1,0 +1,50 @@
+name: Test Terraform Configuration
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+env:
+  APP_NAME: ci-cd-app
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  test-terraform:
+    name: Test Terraform Init and Plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Test AWS credentials
+        run: |
+          echo "Testing AWS credentials..."
+          aws sts get-caller-identity
+          echo "AWS Account ID: $(aws sts get-caller-identity --query Account --output text)"
+          echo "AWS Region: $AWS_REGION"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.6"
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init -input=false
+
+      - name: Terraform validate
+        working-directory: terraform
+        run: terraform validate
+
+      - name: Terraform plan (dry run)
+        working-directory: terraform
+        run: terraform plan -input=false \
+              -var "app_name=${{ env.APP_NAME }}" \
+              -var "aws_region=${{ env.AWS_REGION }}" \
+              -var "desired_count=0"
