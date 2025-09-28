@@ -1,0 +1,657 @@
+<!-- CI/CD Infrastructure Pipeline - Portfolio Section -->
+<!-- Add this section to your main portfolio.html file -->
+
+<section id="projects" class="projects">
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        
+        <!-- CI/CD Infrastructure Pipeline Project -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">🚀</div>
+                <div class="project-title">
+                    <h3>CI/CD Infrastructure Pipeline</h3>
+                    <span class="project-type">DevOps • Cloud • IaC</span>
+                </div>
+            </div>
+            
+            <div class="project-content">
+                <div class="project-description">
+                    <p>
+                        A complete Infrastructure as Code solution demonstrating modern DevOps practices with 
+                        Terraform, AWS, and GitHub Actions. Features automated deployment of containerized 
+                        Flask applications to ECS Fargate with comprehensive CI/CD pipeline.
+                    </p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">ECS Fargate</span>
+                        <span class="tech-tag">GitHub Actions</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">VPC</span>
+                        <span class="tech-tag">ALB</span>
+                        <span class="tech-tag">ECR</span>
+                    </div>
+                </div>
+                
+                <div class="project-features">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li>✅ Infrastructure as Code with Terraform</li>
+                        <li>✅ Automated CI/CD pipeline with GitHub Actions</li>
+                        <li>✅ Containerized Flask application with Docker</li>
+                        <li>✅ AWS ECS Fargate serverless deployment</li>
+                        <li>✅ VPC with private/public subnet architecture</li>
+                        <li>✅ Application Load Balancer with health checks</li>
+                        <li>✅ ECR container registry integration</li>
+                        <li>✅ Comprehensive monitoring and logging</li>
+                        <li>✅ Security-first design with IAM roles</li>
+                        <li>✅ Cost-optimized infrastructure</li>
+                    </ul>
+                </div>
+                
+                <div class="project-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">5-8</div>
+                        <div class="stat-label">Min Deployment</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">11</div>
+                        <div class="stat-label">AWS Services</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Automated</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$60-80</div>
+                        <div class="stat-label">Monthly Cost</div>
+                    </div>
+                </div>
+                
+                <div class="project-links">
+                    <a href="#" class="btn btn-primary" id="live-demo-btn">
+                        🔗 Live Demo
+                    </a>
+                    <a href="https://github.com/letroy969/ci-cd-infra-app" class="btn btn-secondary" target="_blank">
+                        🐙 Code
+                    </a>
+                    <a href="#project-details" class="btn btn-outline" onclick="showProjectDetails('ci-cd')">
+                        📖 Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Details Modal -->
+<div id="project-details-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>CI/CD Infrastructure Pipeline - Project Details</h3>
+            <span class="close" onclick="closeProjectDetails()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="details-section">
+                <h4>🏗️ Architecture Overview</h4>
+                <p>
+                    This project implements a complete Infrastructure as Code solution using Terraform to provision 
+                    AWS infrastructure, including VPC, ECS Fargate, ECR, and Application Load Balancer. The CI/CD 
+                    pipeline automates the entire deployment process from code commit to production.
+                </p>
+                
+                <div class="architecture-diagram">
+                    <div class="arch-component">
+                        <div class="component-icon">🌐</div>
+                        <div class="component-text">
+                            <strong>VPC</strong><br>
+                            10.0.0.0/16 CIDR<br>
+                            4 Subnets (2 AZs)
+                        </div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-component">
+                        <div class="component-icon">⚖️</div>
+                        <div class="component-text">
+                            <strong>ALB</strong><br>
+                            Internet-facing<br>
+                            Health Checks
+                        </div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-component">
+                        <div class="component-icon">🚀</div>
+                        <div class="component-text">
+                            <strong>ECS Fargate</strong><br>
+                            Serverless<br>
+                            Auto-scaling
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="details-section">
+                <h4>🔄 CI/CD Pipeline Flow</h4>
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong>Infrastructure Phase</strong><br>
+                            Terraform provisions AWS resources<br>
+                            ECS service created with desired_count=0
+                        </div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <strong>Build Phase</strong><br>
+                            Docker image built and pushed to ECR<br>
+                            Image tagged with commit SHA and latest
+                        </div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong>Deploy Phase</strong><br>
+                            ECS service updated to desired_count=1<br>
+                            Rolling deployment with health checks
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="details-section">
+                <h4>🛠️ Technical Implementation</h4>
+                <div class="tech-grid">
+                    <div class="tech-category">
+                        <h5>Infrastructure</h5>
+                        <ul>
+                            <li>Terraform IaC</li>
+                            <li>AWS VPC & Subnets</li>
+                            <li>ECS Fargate Cluster</li>
+                            <li>Application Load Balancer</li>
+                            <li>ECR Container Registry</li>
+                        </ul>
+                    </div>
+                    <div class="tech-category">
+                        <h5>Application</h5>
+                        <ul>
+                            <li>Python Flask API</li>
+                            <li>Docker Containerization</li>
+                            <li>Gunicorn WSGI Server</li>
+                            <li>Health Check Endpoints</li>
+                            <li>Environment Configuration</li>
+                        </ul>
+                    </div>
+                    <div class="tech-category">
+                        <h5>DevOps</h5>
+                        <ul>
+                            <li>GitHub Actions CI/CD</li>
+                            <li>Automated Testing</li>
+                            <li>Container Registry</li>
+                            <li>Infrastructure Monitoring</li>
+                            <li>Security Best Practices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="details-section">
+                <h4>📊 Key Metrics</h4>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-value">5-8 min</div>
+                        <div class="metric-label">Deployment Time</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">11</div>
+                        <div class="metric-label">AWS Services</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Automation</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">$60-80</div>
+                        <div class="metric-label">Monthly Cost</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="https://github.com/letroy969/ci-cd-infra-app" class="btn btn-primary" target="_blank">
+                🐙 View Code
+            </a>
+            <button class="btn btn-secondary" onclick="closeProjectDetails()">Close</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Project Section Styles */
+.projects {
+    padding: 5rem 1.5rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    position: relative;
+}
+
+.project-card {
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(0, 246, 255, 0.3);
+    box-shadow: 0 0 50px rgba(0, 246, 255, 0.2);
+    transition: all 0.5s ease;
+    margin-bottom: 3rem;
+}
+
+.project-card:hover {
+    box-shadow: 0 0 80px rgba(0, 246, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.project-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.project-icon {
+    font-size: 3rem;
+    margin-right: 1.5rem;
+}
+
+.project-title h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #00f6ff, #ff00de);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.project-type {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+}
+
+.project-content {
+    display: grid;
+    gap: 2rem;
+}
+
+.project-description {
+    color: #d1d5db;
+    line-height: 1.75;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.tech-tag {
+    background: rgba(0, 246, 255, 0.1);
+    color: #00f6ff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(0, 246, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+    background: rgba(0, 246, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.project-features {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 246, 255, 0.2);
+}
+
+.project-features h4 {
+    color: #00f6ff;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+}
+
+.project-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.project-features li {
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.project-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, rgba(0, 246, 255, 0.1), rgba(255, 0, 222, 0.1));
+    border: 1px solid rgba(0, 246, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    border-color: rgba(0, 246, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00f6ff;
+}
+
+.stat-label {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    border-color: #9ca3af;
+    color: #9ca3af;
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background: #9ca3af;
+    color: #000;
+    box-shadow: 0 0 30px #9ca3af;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: rgba(17, 24, 39, 0.95);
+    margin: 2% auto;
+    padding: 0;
+    border: 1px solid rgba(0, 246, 255, 0.3);
+    border-radius: 1.5rem;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 50px rgba(0, 246, 255, 0.3);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 246, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: #00f6ff;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.close {
+    color: #9ca3af;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #00f6ff;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.details-section {
+    margin-bottom: 2rem;
+}
+
+.details-section h4 {
+    color: #00f6ff;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.architecture-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.arch-component {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 246, 255, 0.1);
+    border: 1px solid rgba(0, 246, 255, 0.3);
+    min-width: 120px;
+}
+
+.component-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.component-text {
+    font-size: 0.875rem;
+    color: #d1d5db;
+}
+
+.arch-arrow {
+    color: #00f6ff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.pipeline-steps {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.pipeline-step {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 246, 255, 0.2);
+}
+
+.step-number {
+    background: linear-gradient(135deg, #00f6ff, #ff00de);
+    color: #000;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.step-content {
+    color: #d1d5db;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.tech-category {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 246, 255, 0.2);
+}
+
+.tech-category h5 {
+    color: #00f6ff;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.tech-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.tech-category li {
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.tech-category li::before {
+    content: "▸";
+    color: #00f6ff;
+    position: absolute;
+    left: 0;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.metric-item {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(0, 246, 255, 0.1), rgba(255, 0, 222, 0.1));
+    border: 1px solid rgba(0, 246, 255, 0.2);
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00f6ff;
+}
+
+.metric-label {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(0, 246, 255, 0.2);
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .project-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .project-links {
+        flex-direction: column;
+    }
+    
+    .architecture-diagram {
+        flex-direction: column;
+    }
+    
+    .arch-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+}
+</style>
+
+<script>
+// Project Details Modal Functions
+function showProjectDetails(projectId) {
+    const modal = document.getElementById('project-details-modal');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProjectDetails() {
+    const modal = document.getElementById('project-details-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('project-details-modal');
+    if (event.target == modal) {
+        closeProjectDetails();
+    }
+}
+
+// Update Live Demo button with actual URL (replace with your deployed URL)
+document.addEventListener('DOMContentLoaded', function() {
+    const liveDemoBtn = document.getElementById('live-demo-btn');
+    // Replace with your actual ALB DNS name once deployed
+    const deployedUrl = 'http://YOUR_ALB_DNS_NAME_HERE';
+    
+    if (liveDemoBtn) {
+        liveDemoBtn.href = deployedUrl;
+        liveDemoBtn.target = '_blank';
+    }
+});
+</script>

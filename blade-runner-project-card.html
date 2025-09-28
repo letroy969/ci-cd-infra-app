@@ -1,0 +1,559 @@
+<!-- CI/CD Infrastructure Pipeline - Blade Runner Portfolio Project Card -->
+<!-- Add this as a new project card in your existing projects-grid section -->
+
+<div class="project-card purple">
+    <div class="project-tech-pattern">
+        <div class="project-tech-square"></div>
+    </div>
+    
+    <div class="project-status">
+        <div class="project-status-dot"></div>
+        <span class="project-status-text">LIVE</span>
+    </div>
+    
+    <div class="project-content">
+        <h3 class="project-title">&lt; CI/CD Infrastructure Pipeline /&gt;</h3>
+        
+        <p class="project-description">
+            Complete Infrastructure as Code solution with automated deployment pipeline. 
+            Terraform-provisioned AWS infrastructure with containerized Flask application 
+            deployed to ECS Fargate via GitHub Actions.
+        </p>
+
+        <div class="project-tech-stack">
+            <span class="project-tech-tag">Terraform</span>
+            <span class="project-tech-tag">AWS</span>
+            <span class="project-tech-tag">Docker</span>
+            <span class="project-tech-tag">ECS Fargate</span>
+            <span class="project-tech-tag">GitHub Actions</span>
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">Flask</span>
+            <span class="project-tech-tag">VPC</span>
+        </div>
+
+        <div class="project-links">
+            <a href="#" class="project-link" id="ci-cd-live-demo">
+                <span class="project-link-icon">🔗</span>
+                Live Demo
+            </a>
+            
+            <a href="https://github.com/letroy969/ci-cd-infra-app" class="project-link secondary" target="_blank">
+                <span class="project-link-icon">🐙</span>
+                Code
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Project Details Modal (Add this after your existing modals) -->
+<div id="ci-cd-modal" class="project-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>&lt; CI/CD Infrastructure Pipeline /&gt;</h3>
+            <button class="modal-close" onclick="closeModal('ci-cd-modal')">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="project-overview">
+                <div class="project-hero-image">
+                    <div class="infrastructure-diagram">
+                        <div class="diagram-layer">
+                            <div class="diagram-node aws">
+                                <span class="node-icon">☁️</span>
+                                <span class="node-label">AWS Cloud</span>
+                            </div>
+                        </div>
+                        <div class="diagram-layer">
+                            <div class="diagram-node vpc">
+                                <span class="node-icon">🌐</span>
+                                <span class="node-label">VPC</span>
+                            </div>
+                            <div class="diagram-node alb">
+                                <span class="node-icon">⚖️</span>
+                                <span class="node-label">ALB</span>
+                            </div>
+                            <div class="diagram-node ecs">
+                                <span class="node-icon">🚀</span>
+                                <span class="node-label">ECS Fargate</span>
+                            </div>
+                        </div>
+                        <div class="diagram-layer">
+                            <div class="diagram-node ecr">
+                                <span class="node-icon">📦</span>
+                                <span class="node-label">ECR</span>
+                            </div>
+                            <div class="diagram-node github">
+                                <span class="node-icon">🐙</span>
+                                <span class="node-label">GitHub Actions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-details">
+                    <h4>🏗️ Architecture Overview</h4>
+                    <p>
+                        This project demonstrates a complete Infrastructure as Code solution using Terraform to provision 
+                        AWS infrastructure, including VPC, ECS Fargate, ECR, and Application Load Balancer. The CI/CD 
+                        pipeline automates the entire deployment process from code commit to production.
+                    </p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🔧</div>
+                            <h5>Infrastructure as Code</h5>
+                            <p>Terraform-managed AWS resources with version control</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚀</div>
+                            <h5>Automated Deployment</h5>
+                            <p>GitHub Actions CI/CD pipeline with zero-downtime deployments</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🐳</div>
+                            <h5>Containerized App</h5>
+                            <p>Docker containerized Flask application with health checks</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">☁️</div>
+                            <h5>Cloud Native</h5>
+                            <p>ECS Fargate serverless containers with auto-scaling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="technical-specs">
+                <h4>🛠️ Technical Specifications</h4>
+                <div class="specs-grid">
+                    <div class="spec-category">
+                        <h5>Infrastructure</h5>
+                        <ul>
+                            <li>VPC with Public/Private Subnets</li>
+                            <li>Application Load Balancer</li>
+                            <li>ECS Fargate Cluster</li>
+                            <li>ECR Container Registry</li>
+                            <li>Security Groups & IAM</li>
+                        </ul>
+                    </div>
+                    <div class="spec-category">
+                        <h5>Application</h5>
+                        <ul>
+                            <li>Python Flask Web App</li>
+                            <li>Docker Multi-stage Build</li>
+                            <li>Gunicorn WSGI Server</li>
+                            <li>Health Check Endpoints</li>
+                            <li>Environment Configuration</li>
+                        </ul>
+                    </div>
+                    <div class="spec-category">
+                        <h5>DevOps</h5>
+                        <ul>
+                            <li>GitHub Actions CI/CD</li>
+                            <li>Terraform State Management</li>
+                            <li>Automated Testing</li>
+                            <li>Container Registry</li>
+                            <li>Monitoring & Logging</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="deployment-flow">
+                <h4>🔄 Deployment Pipeline</h4>
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h6>Infrastructure Phase</h6>
+                            <p>Terraform provisions AWS resources with desired_count=0</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h6>Build Phase</h6>
+                            <p>Docker image built and pushed to ECR with commit SHA</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h6>Deploy Phase</h6>
+                            <p>ECS service updated to desired_count=1 with rolling deployment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-metrics">
+                <h4>📊 Project Metrics</h4>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">5-8 min</div>
+                        <div class="metric-label">Deployment Time</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">11</div>
+                        <div class="metric-label">AWS Services</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Automated</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$60-80</div>
+                        <div class="metric-label">Monthly Cost</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <a href="https://github.com/letroy969/ci-cd-infra-app" class="cyber-btn btn-primary" target="_blank">
+                <div class="btn-glow"></div>
+                <span class="btn-text">VIEW CODE</span>
+                <div class="btn-indicator"></div>
+            </a>
+            <button class="cyber-btn btn-secondary" onclick="closeModal('ci-cd-modal')">
+                <div class="btn-glow"></div>
+                <span class="btn-text">CLOSE</span>
+                <div class="btn-indicator"></div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Additional CSS for the CI/CD Project (Add to your existing CSS) -->
+<style>
+/* CI/CD Project Specific Styles */
+.project-card.purple {
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(147, 51, 234, 0.05) 100%);
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+}
+
+.project-card.purple:hover {
+    box-shadow: 0 0 50px rgba(138, 43, 226, 0.4);
+    border-color: rgba(138, 43, 226, 0.6);
+}
+
+.project-card.purple .project-tech-pattern .project-tech-square {
+    background: linear-gradient(45deg, rgba(138, 43, 226, 0.2), rgba(147, 51, 234, 0.1));
+    border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.project-card.purple .project-status-dot {
+    background: #8a2be2;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.project-card.purple .project-link:hover {
+    background: rgba(138, 43, 226, 0.2);
+    border-color: rgba(138, 43, 226, 0.6);
+    color: #8a2be2;
+}
+
+/* Infrastructure Diagram Styles */
+.infrastructure-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.diagram-layer {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.diagram-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    background: rgba(138, 43, 226, 0.1);
+    min-width: 100px;
+    transition: all 0.3s ease;
+}
+
+.diagram-node:hover {
+    border-color: rgba(138, 43, 226, 0.6);
+    background: rgba(138, 43, 226, 0.2);
+    transform: scale(1.05);
+}
+
+.node-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.node-label {
+    font-size: 0.75rem;
+    color: #d1d5db;
+    text-align: center;
+}
+
+.diagram-node.aws {
+    border-color: rgba(255, 165, 0, 0.3);
+    background: rgba(255, 165, 0, 0.1);
+}
+
+.diagram-node.vpc {
+    border-color: rgba(0, 246, 255, 0.3);
+    background: rgba(0, 246, 255, 0.1);
+}
+
+.diagram-node.alb {
+    border-color: rgba(255, 0, 222, 0.3);
+    background: rgba(255, 0, 222, 0.1);
+}
+
+.diagram-node.ecs {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.diagram-node.ecr {
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.diagram-node.github {
+    border-color: rgba(139, 69, 19, 0.3);
+    background: rgba(139, 69, 19, 0.1);
+}
+
+/* Feature Grid Styles */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.feature-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    border-color: rgba(138, 43, 226, 0.4);
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card h5 {
+    color: #8a2be2;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.feature-card p {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+/* Specs Grid Styles */
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.spec-category {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.spec-category h5 {
+    color: #8a2be2;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.spec-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.spec-category li {
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.spec-category li::before {
+    content: "▸";
+    color: #8a2be2;
+    position: absolute;
+    left: 0;
+}
+
+/* Pipeline Steps Styles */
+.pipeline-steps {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.pipeline-step {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.step-number {
+    background: linear-gradient(135deg, #8a2be2, #9370db);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.step-content h6 {
+    color: #8a2be2;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.step-content p {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+/* Metrics Grid Styles */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.metric-card {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: rgba(138, 43, 226, 0.1);
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    border-color: rgba(138, 43, 226, 0.4);
+    transform: scale(1.05);
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #8a2be2;
+}
+
+.metric-label {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .diagram-layer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<script>
+// Update Live Demo URL when infrastructure is deployed
+document.addEventListener('DOMContentLoaded', function() {
+    const liveDemoBtn = document.getElementById('ci-cd-live-demo');
+    
+    // Replace with your actual ALB DNS name once deployed
+    // You can get this by running: cd terraform && terraform output alb_dns_name
+    const deployedUrl = 'http://YOUR_ALB_DNS_NAME_HERE';
+    
+    if (liveDemoBtn && deployedUrl !== 'http://YOUR_ALB_DNS_NAME_HERE') {
+        liveDemoBtn.href = deployedUrl;
+        liveDemoBtn.target = '_blank';
+    } else {
+        // If not deployed yet, show a message or disable the button
+        liveDemoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('🚀 Infrastructure deployment in progress...\n\nOnce deployed, this will link to your live demo!\n\nCheck GitHub Actions for deployment status.');
+        });
+    }
+});
+
+// Modal functions (if not already defined in your portfolio)
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Add click handler for project card to open modal
+document.addEventListener('DOMContentLoaded', function() {
+    const projectCard = document.querySelector('.project-card.purple');
+    if (projectCard) {
+        projectCard.addEventListener('click', function(e) {
+            // Don't open modal if clicking on links
+            if (!e.target.closest('.project-links')) {
+                const modal = document.getElementById('ci-cd-modal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+    }
+});
+</script>
