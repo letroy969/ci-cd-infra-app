@@ -1,0 +1,115 @@
+name: CI/CD Pipeline (Terraform + Build + Deploy)
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  APP_NAME: ci-cd-app
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  infrastructure:
+    name: Terraform apply (infra-only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.6"
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init -input=false
+
+      - name: Terraform apply (infra, desired_count=0)
+        working-directory: terraform
+        run: terraform apply -auto-approve -input=false \
+              -var "app_name=${{ env.APP_NAME }}" \
+              -var "aws_region=${{ env.AWS_REGION }}" \
+              -var "desired_count=0"
+
+      - name: Save terraform outputs
+        working-directory: terraform
+        run: terraform output -json > tf_outputs.json
+
+      - name: Upload terraform outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: tf-outputs
+          path: terraform/tf_outputs.json
+
+  build_and_deploy:
+    name: Build image, push to ECR, update ECS
+    runs-on: ubuntu-latest
+    needs: infrastructure
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download terraform outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: tf-outputs
+          path: .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Build & push Docker image (tagged with commit SHA + latest)
+        run: |
+          REPO=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.APP_NAME }}
+          SHA_TAG=${{ github.sha }}
+          docker build -t $REPO:$SHA_TAG app/
+          docker push $REPO:$SHA_TAG
+          docker tag $REPO:$SHA_TAG $REPO:latest
+          docker push $REPO:latest
+
+      - name: Make ECS run the new image (set desired_count=1 & force new deployment)
+        run: |
+          CLUSTER_NAME=$(jq -r '.cluster_name.value' tf_outputs.json)
+          SERVICE_NAME=$(jq -r '.service_name.value' tf_outputs.json)
+          # scale up
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 1
+          # force deployment so it picks up :latest image that was pushed
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
+
+      - name: Wait for deployment
+        run: |
+          CLUSTER_NAME=$(jq -r '.cluster_name.value' tf_outputs.json)
+          SERVICE_NAME=$(jq -r '.service_name.value' tf_outputs.json)
+          for i in {1..30}; do
+            DESIRED=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].desiredCount' --output text)
+            RUNNING=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].runningCount' --output text)
+            echo "desired=$DESIRED running=$RUNNING"
+            if [ "$DESIRED" = "$RUNNING" ] && [ "$DESIRED" != "0" ]; then
+              echo "Deployment succeeded"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Deployment did not become stable in time"
+          exit 1
+
+      - name: Smoke test /health
+        run: |
+          ALB=$(jq -r '.alb_dns_name.value' tf_outputs.json)
+          echo "ALB DNS: $ALB"
+          curl --fail -sS "http://$ALB/health"

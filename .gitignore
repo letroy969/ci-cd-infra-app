@@ -1,0 +1,11 @@
+# .gitignore
+__pycache__/
+*.pyc
+.terraform/
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.*
+.terraform.lock.hcl
+.env
+*.log
+.DS_Store
